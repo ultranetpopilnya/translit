@@ -145,6 +145,10 @@
                 buttonElement.textContent = 'Скопійовано!';
                 buttonElement.classList.add('copied');
                 buttonElement.disabled = true;
+
+                // Очищення поля вводу після копіювання
+                document.getElementById('fullNameInput').value = '';
+                document.getElementById('results-container').innerHTML = '';
                 
                 setTimeout(() => {
                     buttonElement.textContent = originalText;
