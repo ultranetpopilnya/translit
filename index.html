@@ -196,12 +196,15 @@
                 `;
                 resultsContainer.appendChild(resultItem);
             });
+
+            // Очищення поля вводу після генерації
+            fullNameInput.value = '';
         }
         
-        // Add event listener to the textarea for automatic generation
+        // Add event listener to the textarea to trigger generation on blur
         document.addEventListener('DOMContentLoaded', () => {
             const fullNameInput = document.getElementById('fullNameInput');
-            fullNameInput.addEventListener('input', generateLogins);
+            fullNameInput.addEventListener('blur', generateLogins);
         });
     </script>
 
