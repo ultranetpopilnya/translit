@@ -93,15 +93,22 @@
         .result-item button.copied {
             background-color: #28a745;
         }
-        footer {
-            text-align: center;
-            margin-top: auto; /* Push the footer to the bottom */
+        /* Нові стилі для версії */
+        .version-info {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            font-size: 14px;
             color: #888;
-            padding-bottom: 1rem;
+            z-index: 1000;
         }
     </style>
 </head>
 <body>
+
+<div class="version-info">
+    <p>Версія 1.03</p>
+</div>
 
 <div class="container">
     <h1>Генератор логінів <span style="color: #811e71;">Ультранет</span> + <span style="color: #fff200;">I</span><span style="color: #dbeb00;">S</span><span style="color: #00d4ff;">P</span> Energy</h1>
@@ -216,15 +223,5 @@
         });
     </script>
     
-    <footer>
-        <p>Версія 1.03</p>
-    </footer>
-
 </body>
 </html>
-
-
-
-
-
-
