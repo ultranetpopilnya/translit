@@ -9,8 +9,9 @@
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             display: flex;
-            justify-content: center;
-            align-items: flex-start; /* Aligned to top */
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
             min-height: 100vh;
             margin: 0;
             padding: 2rem 0;
@@ -25,6 +26,7 @@
             text-align: center;
             width: 90%;
             max-width: 600px;
+            margin-bottom: 2rem;
         }
         h1 {
             color: #444;
@@ -90,6 +92,12 @@
         }
         .result-item button.copied {
             background-color: #28a745;
+        }
+        footer {
+            text-align: center;
+            margin-top: auto; /* Push the footer to the bottom */
+            color: #888;
+            padding-bottom: 1rem;
         }
     </style>
 </head>
@@ -207,6 +215,10 @@
             fullNameInput.addEventListener('input', generateLogins);
         });
     </script>
+    
+    <footer>
+        <p>Версія 1.0</p>
+    </footer>
 
 </body>
 </html>
