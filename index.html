@@ -99,7 +99,6 @@
         <h1>Генератор логінів</h1>
         <p>Введіть одне або декілька ПІБ, кожне з нового рядка:</p>
         <textarea id="fullNameInput" rows="5" placeholder="Тригубець Вадим Сергійович&#10;Шевченко Тарас Григорович"></textarea>
-        <button onclick="generateLogins()">Згенерувати</button>
         <div id="results-container"></div>
     </div>
 
@@ -161,10 +160,9 @@
             const fullNameInput = document.getElementById('fullNameInput');
             const fullNames = fullNameInput.value.trim();
             const resultsContainer = document.getElementById('results-container');
-            resultsContainer.innerHTML = ''; // Очищуємо попередні результати
+            resultsContainer.innerHTML = '';
 
             if (!fullNames) {
-                resultsContainer.innerHTML = '<p style="color: #dc3545;">Будь ласка, введіть ПІБ.</p>';
                 return;
             }
 
@@ -172,7 +170,7 @@
 
             lines.forEach(line => {
                 const fullName = line.trim();
-                if (fullName === '') return; // Пропускаємо порожні рядки
+                if (fullName === '') return;
 
                 const parts = fullName.split(/\s+/);
                 if (parts.length < 3) {
@@ -198,12 +196,14 @@
                 `;
                 resultsContainer.appendChild(resultItem);
             });
-
-            // Очищуємо поле вводу після генерації
-            fullNameInput.value = '';
         }
+        
+        // Add event listener to the textarea for automatic generation
+        document.addEventListener('DOMContentLoaded', () => {
+            const fullNameInput = document.getElementById('fullNameInput');
+            fullNameInput.addEventListener('input', generateLogins);
+        });
     </script>
 
 </body>
-
 </html>
