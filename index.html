@@ -107,7 +107,7 @@
 <body>
 
 <div class="version-info">
-    <p>Версія 1.04</p>
+    <p>Версія 1.05</p>
 </div>
 
 <div class="container">
@@ -191,20 +191,34 @@
                 if (fullName === '') return;
 
                 const parts = fullName.split(/\s+/);
-                if (parts.length < 3) {
+                
+                // Змінена логіка для обробки різних варіантів вводу
+                let login = '';
+                let transliteratedLastName = '';
+                let firstNameInitial = '';
+                let patronymicInitial = '';
+
+                if (parts.length >= 1) {
+                    transliteratedLastName = transliterate(parts[0]);
+                    login += transliteratedLastName;
+                }
+                if (parts.length >= 2) {
+                    firstNameInitial = transliterate(parts[1].charAt(0));
+                    login += firstNameInitial;
+                }
+                if (parts.length >= 3) {
+                    patronymicInitial = transliterate(parts[2].charAt(0));
+                    login += patronymicInitial;
+                }
+
+                if (login === '') {
                     const errorElement = document.createElement('div');
                     errorElement.className = 'result-item';
-                    errorElement.innerHTML = `<span class="original-name" style="color: #dc3545;">"${fullName}" - Неповний ПІБ</span>`;
+                    errorElement.innerHTML = `<span class="original-name" style="color: #dc3545;">"${fullName}" - Некоректний формат</span>`;
                     resultsContainer.appendChild(errorElement);
                     return;
                 }
-
-                const [lastName, firstName, patronymic] = parts;
-                const transliteratedLastName = transliterate(lastName);
-                const firstNameInitial = transliterate(firstName.charAt(0));
-                const patronymicInitial = transliterate(patronymic.charAt(0));
-                const login = transliteratedLastName + firstNameInitial + patronymicInitial;
-
+                
                 const resultItem = document.createElement('div');
                 resultItem.className = 'result-item';
                 resultItem.innerHTML = `
@@ -225,9 +239,3 @@
     
 </body>
 </html>
-
-
-
-
-
-
