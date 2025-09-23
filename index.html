@@ -107,7 +107,7 @@
 <body>
 
 <div class="version-info">
-    <p>Версія 1.10b</p>
+    <p>Версія 1.05</p>
 </div>
 
 <div class="container">
@@ -141,6 +141,7 @@
             const char = text[i];
             const isFirstChar = (i === 0);
             
+            // Handle specific Ukrainian combinations
             if (char === 'з' && i + 1 < text.length && text[i + 1] === 'г') {
                 result += 'zgh';
                 i++;
@@ -151,9 +152,10 @@
                 result += isFirstChar ? positionalRules[char].start : positionalRules[char].other;
             } else if (mapping[char]) {
                 result += mapping[char];
-            } else if (!isNaN(parseInt(char))) {
+            } else if (!isNaN(parseInt(char))) { // Check if the character is a digit
                 result += char;
             } else {
+                // Ignore other characters like spaces and special symbols
                 continue;
             }
         }
@@ -195,19 +197,16 @@
             const fullName = line.trim();
             if (fullName === '') return;
 
-            const lowerCaseLine = fullName.toLowerCase();
-            const parts = fullName.split(/\s+/).filter(part => part.length > 0);
+            const isCompany = fullName.toLowerCase().includes('тов') || fullName.toLowerCase().includes('фоп');
             
             let login = '';
-
-            // Check if the line contains "ТОВ", "ФОП", or "ПП" and has more than 3 words.
-            // Using a case-insensitive check for the keywords.
-            const isCompany = ['тов', 'фоп', 'пп'].some(keyword => lowerCaseLine.includes(keyword));
-            
-            if (isCompany && parts.length > 3) {
+            if (isCompany) {
+                // Transliterate the entire line and allow numbers
                 login = transliterate(fullName);
             } else {
-                // Default logic for P.I.B.
+                // Original logic for individuals (P.I.B.)
+                const parts = fullName.split(/\s+/);
+                
                 let transliteratedLastName = '';
                 let firstNameInitial = '';
                 let patronymicInitial = '';
@@ -253,4 +252,3 @@
     
 </body>
 </html>
-
