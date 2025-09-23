@@ -12,7 +12,7 @@
             flex-direction: column;
             justify-content: flex-start;
             align-items: center;
-            min-height: 100vh;
+            min-height: 10vh;
             margin: 0;
             padding: 2rem 0;
             background-color: #f4f4f9;
@@ -107,7 +107,7 @@
 <body>
 
 <div class="version-info">
-    <p>Версія 1.06</p>
+    <p>Версія 1.10c</p>
 </div>
 
 <div class="container">
@@ -197,15 +197,17 @@
             const fullName = line.trim();
             if (fullName === '') return;
 
-            const isCompany = fullName.toLowerCase().includes('тов') || fullName.toLowerCase().includes('фоп');
+            const lowerCaseFullName = fullName.toLowerCase();
+            const isCompany = lowerCaseFullName.includes('тов') || lowerCaseFullName.includes('фоп') || lowerCaseFullName.includes('пп');
             
             let login = '';
-            if (isCompany) {
+            const parts = fullName.split(/\s+/);
+
+            if (isCompany || parts.length > 3) {
                 // Transliterate the entire line and allow numbers
-                login = transliterate(fullName);
+                login = transliterate(fullName.replace(/[^а-яА-ЯёЁ\s]/g, ''));
             } else {
                 // Original logic for individuals (P.I.B.)
-                const parts = fullName.split(/\s+/);
                 
                 let transliteratedLastName = '';
                 let firstNameInitial = '';
@@ -252,4 +254,3 @@
     
 </body>
 </html>
-
