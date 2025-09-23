@@ -107,7 +107,7 @@
 <body>
 
 <div class="version-info">
-    <p>Версія 1.06</p>
+    <p>Версія 1.07</p>
 </div>
 
 <div class="container">
@@ -140,15 +140,23 @@
         for (let i = 0; i < text.length; i++) {
             const char = text[i];
             const isFirstChar = (i === 0);
+            
+            // Handle specific Ukrainian combinations
             if (char === 'з' && i + 1 < text.length && text[i + 1] === 'г') {
                 result += 'zgh';
                 i++;
                 continue;
             }
+            
             if (positionalRules[char]) {
                 result += isFirstChar ? positionalRules[char].start : positionalRules[char].other;
+            } else if (mapping[char]) {
+                result += mapping[char];
+            } else if (!isNaN(parseInt(char))) { // Check if the character is a digit
+                result += char;
             } else {
-                result += mapping[char] || '';
+                // Ignore other characters like spaces and special symbols
+                continue;
             }
         }
         return result;
@@ -161,7 +169,6 @@
             buttonElement.classList.add('copied');
             buttonElement.disabled = true;
             
-            // Очищення поля вводу після копіювання
             document.getElementById('fullNameInput').value = '';
             
             setTimeout(() => {
@@ -190,15 +197,14 @@
             const fullName = line.trim();
             if (fullName === '') return;
 
-            // Check for "ТОВ" or "ФОП"
             const isCompany = fullName.toLowerCase().includes('тов') || fullName.toLowerCase().includes('фоп');
             
             let login = '';
             if (isCompany) {
-                // Transliterate the entire line without shortening
+                // Transliterate the entire line and allow numbers
                 login = transliterate(fullName);
             } else {
-                // Original logic for individuals
+                // Original logic for individuals (P.I.B.)
                 const parts = fullName.split(/\s+/);
                 
                 let transliteratedLastName = '';
@@ -238,7 +244,6 @@
         });
     }
     
-    // Add event listener to the textarea for automatic generation
     document.addEventListener('DOMContentLoaded', () => {
         const fullNameInput = document.getElementById('fullNameInput');
         fullNameInput.addEventListener('input', generateLogins);
