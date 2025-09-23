@@ -12,7 +12,7 @@
             flex-direction: column;
             justify-content: flex-start;
             align-items: center;
-            min-height: 10vh;
+            min-height: 100vh;
             margin: 0;
             padding: 2rem 0;
             background-color: #f4f4f9;
@@ -107,7 +107,7 @@
 <body>
 
 <div class="version-info">
-    <p>Версія 1.10c</p>
+    <p>Версія 1.10d</p>
 </div>
 
 <div class="container">
@@ -205,7 +205,7 @@
 
             if (isCompany || parts.length > 3) {
                 // Transliterate the entire line and allow numbers
-                login = transliterate(fullName.replace(/[^а-яА-ЯёЁ\s]/g, ''));
+                login = transliterate(fullName);
             } else {
                 // Original logic for individuals (P.I.B.)
                 
