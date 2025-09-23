@@ -96,28 +96,27 @@
         .result-item button.copied {
             background-color: #28a745;
         }
-        /* Нові стилі для версії */
-        .version-info {
-            position: fixed;
-            top: 10px;
-            right: 10px;
-            font-size: 14px;
+        /* Нові стилі для футера */
+        .footer {
+            margin-top: auto; /* Push footer to the bottom */
+            padding-top: 1rem;
+            text-align: center;
             color: #888;
-            z-index: 1000;
+            font-size: 14px;
         }
     </style>
 </head>
 <body>
-
-<div class="version-info">
-    <p>Версія 1.10e</p>
-</div>
 
 <div class="container">
     <h1>Генератор логінів <span style="color: #811e71;">Ультранет</span> та <span style="color: #fff200;">I</span><span style="color: #00c100;">S</span><span style="color: #00d4ff;">P</span> Energy</h1>
     <p>Введіть повністю одне або декілька ПІБ, кожне — з нового рядка:</p>
     <textarea id="fullNameInput" rows="5" placeholder="Прізвище, Ім'я, та по Батькові"></textarea>
     <div id="results-container"></div>
+</div>
+
+<div class="footer">
+    <p>Версія 1.11</p>
 </div>
 
 <script>
