@@ -30,12 +30,6 @@
             width: 90%;
             max-width: 600px;
             margin-bottom: 2rem;
-            
-            /* Нові стилі для вирівнювання */
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-start; /* Вирівнює вміст до верху */
         }
         h1 {
             color: #444;
@@ -67,7 +61,6 @@
         #results-container {
             margin-top: 1.5rem;
             text-align: left;
-            width: 100%; /* Додано для коректного відображення */
         }
         .result-item {
             display: flex;
@@ -108,7 +101,6 @@
             font-size: 14px;
             color: #888;
             text-align: center;
-            width: 100%; /* Додано для коректного відображення */
         }
     </style>
 </head>
@@ -116,12 +108,12 @@
 
 <div class="container">
     <h1>Генератор логінів <span style="color: #811e71;">Ультранет</span> та <span style="color: #fff200;">I</span><span style="color: #00c100;">S</span><span style="color: #00d4ff;">P</span> Energy</h1>
-    <p>Введіть повністю одне або декілька ПІБ, кожне — з нового рядка. Також можливий трансліт для ФОП, ТОВ, ПП.</p>
+    <p>Введіть повністю одне або декілька ПІБ, кожне — з нового рядка:</p>
     <textarea id="fullNameInput" rows="5" placeholder="Прізвище, Ім'я, та по Батькові"></textarea>
     <div id="results-container"></div>
     
     <div class="version-info">
-        <p>Версія 1.13</p>
+        <p>Версія 1.12🙃</p>
     </div>
 </div>
 
@@ -262,3 +254,4 @@
     
 </body>
 </html>
+
