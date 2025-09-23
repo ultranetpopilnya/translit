@@ -107,7 +107,7 @@
 <body>
 
 <div class="version-info">
-    <p>Версія 1.07</p>
+    <p>Версія 1.10</p>
 </div>
 
 <div class="container">
@@ -141,7 +141,6 @@
             const char = text[i];
             const isFirstChar = (i === 0);
             
-            // Handle specific Ukrainian combinations
             if (char === 'з' && i + 1 < text.length && text[i + 1] === 'г') {
                 result += 'zgh';
                 i++;
@@ -152,10 +151,9 @@
                 result += isFirstChar ? positionalRules[char].start : positionalRules[char].other;
             } else if (mapping[char]) {
                 result += mapping[char];
-            } else if (!isNaN(parseInt(char))) { // Check if the character is a digit
+            } else if (!isNaN(parseInt(char))) {
                 result += char;
             } else {
-                // Ignore other characters like spaces and special symbols
                 continue;
             }
         }
@@ -197,16 +195,16 @@
             const fullName = line.trim();
             if (fullName === '') return;
 
-            const isCompany = fullName.toLowerCase().includes('тов') || fullName.toLowerCase().includes('фоп');
+            const lowerCaseLine = fullName.toLowerCase();
+            const parts = fullName.split(/\s+/).filter(part => part.length > 0);
             
             let login = '';
-            if (isCompany) {
-                // Transliterate the entire line and allow numbers
+
+            // Check for "ТОВ", "ФОП", or "ПП" and more than 3 words
+            if ((lowerCaseLine.includes('тов') || lowerCaseLine.includes('фоп') || lowerCaseLine.includes('пп')) && parts.length > 3) {
                 login = transliterate(fullName);
             } else {
-                // Original logic for individuals (P.I.B.)
-                const parts = fullName.split(/\s+/);
-                
+                // Original logic for individuals
                 let transliteratedLastName = '';
                 let firstNameInitial = '';
                 let patronymicInitial = '';
