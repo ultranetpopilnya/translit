@@ -107,7 +107,7 @@
 <body>
 
 <div class="version-info">
-    <p>Версія 1.05</p>
+    <p>Версія 1.06</p>
 </div>
 
 <div class="container">
@@ -117,83 +117,90 @@
     <div id="results-container"></div>
 </div>
 
-    <script>
-        function transliterate(text) {
-            const mapping = {
-                'а': 'a', 'б': 'b', 'в': 'v', 'г': 'h', 'ґ': 'g', 'д': 'd',
-                'е': 'e', 'ж': 'zh', 'з': 'z', 'и': 'y', 'і': 'i', 'й': 'i',
-                'к': 'k', 'л': 'l', 'м': 'm', 'н': 'n', 'о': 'o', 'п': 'p',
-                'р': 'r', 'с': 's', 'т': 't', 'у': 'u', 'ф': 'f', 'х': 'kh',
-                'ц': 'ts', 'ч': 'ch', 'ш': 'sh', 'щ': 'shch', 'ь': '', "'": ''
-            };
-            const positionalRules = {
-                'є': { start: 'ye', other: 'ie' },
-                'ї': { start: 'yi', other: 'i' },
-                'й': { start: 'y', other: 'i' },
-                'ю': { start: 'yu', other: 'iu' },
-                'я': { start: 'ya', other: 'ia' }
-            };
+<script>
+    function transliterate(text) {
+        const mapping = {
+            'а': 'a', 'б': 'b', 'в': 'v', 'г': 'h', 'ґ': 'g', 'д': 'd',
+            'е': 'e', 'ж': 'zh', 'з': 'z', 'и': 'y', 'і': 'i', 'й': 'i',
+            'к': 'k', 'л': 'l', 'м': 'm', 'н': 'n', 'о': 'o', 'п': 'p',
+            'р': 'r', 'с': 's', 'т': 't', 'у': 'u', 'ф': 'f', 'х': 'kh',
+            'ц': 'ts', 'ч': 'ch', 'ш': 'sh', 'щ': 'shch', 'ь': '', "'": ''
+        };
+        const positionalRules = {
+            'є': { start: 'ye', other: 'ie' },
+            'ї': { start: 'yi', other: 'i' },
+            'й': { start: 'y', other: 'i' },
+            'ю': { start: 'yu', other: 'iu' },
+            'я': { start: 'ya', other: 'ia' }
+        };
 
-            let result = '';
-            text = text.toLowerCase();
+        let result = '';
+        text = text.toLowerCase();
 
-            for (let i = 0; i < text.length; i++) {
-                const char = text[i];
-                const isFirstChar = (i === 0);
-                if (char === 'з' && i + 1 < text.length && text[i + 1] === 'г') {
-                    result += 'zgh';
-                    i++;
-                    continue;
-                }
-                if (positionalRules[char]) {
-                    result += isFirstChar ? positionalRules[char].start : positionalRules[char].other;
-                } else {
-                    result += mapping[char] || '';
-                }
+        for (let i = 0; i < text.length; i++) {
+            const char = text[i];
+            const isFirstChar = (i === 0);
+            if (char === 'з' && i + 1 < text.length && text[i + 1] === 'г') {
+                result += 'zgh';
+                i++;
+                continue;
             }
-            return result;
+            if (positionalRules[char]) {
+                result += isFirstChar ? positionalRules[char].start : positionalRules[char].other;
+            } else {
+                result += mapping[char] || '';
+            }
+        }
+        return result;
+    }
+
+    function copyLogin(textToCopy, buttonElement) {
+        navigator.clipboard.writeText(textToCopy).then(() => {
+            const originalText = buttonElement.textContent;
+            buttonElement.textContent = 'Скопійовано!';
+            buttonElement.classList.add('copied');
+            buttonElement.disabled = true;
+            
+            // Очищення поля вводу після копіювання
+            document.getElementById('fullNameInput').value = '';
+            
+            setTimeout(() => {
+                buttonElement.textContent = originalText;
+                buttonElement.classList.remove('copied');
+                buttonElement.disabled = false;
+            }, 2000);
+        }).catch(err => {
+            console.error('Не вдалося скопіювати текст: ', err);
+        });
+    }
+
+    function generateLogins() {
+        const fullNameInput = document.getElementById('fullNameInput');
+        const fullNames = fullNameInput.value.trim();
+        const resultsContainer = document.getElementById('results-container');
+        resultsContainer.innerHTML = '';
+
+        if (!fullNames) {
+            return;
         }
 
-        function copyLogin(textToCopy, buttonElement) {
-            navigator.clipboard.writeText(textToCopy).then(() => {
-                const originalText = buttonElement.textContent;
-                buttonElement.textContent = 'Скопійовано!';
-                buttonElement.classList.add('copied');
-                buttonElement.disabled = true;
-                
-                // Очищення поля вводу після копіювання
-                document.getElementById('fullNameInput').value = '';
-                
-                setTimeout(() => {
-                    buttonElement.textContent = originalText;
-                    buttonElement.classList.remove('copied');
-                    buttonElement.disabled = false;
-                }, 2000);
-            }).catch(err => {
-                console.error('Не вдалося скопіювати текст: ', err);
-            });
-        }
+        const lines = fullNames.split('\n');
 
-        function generateLogins() {
-            const fullNameInput = document.getElementById('fullNameInput');
-            const fullNames = fullNameInput.value.trim();
-            const resultsContainer = document.getElementById('results-container');
-            resultsContainer.innerHTML = '';
+        lines.forEach(line => {
+            const fullName = line.trim();
+            if (fullName === '') return;
 
-            if (!fullNames) {
-                return;
-            }
-
-            const lines = fullNames.split('\n');
-
-            lines.forEach(line => {
-                const fullName = line.trim();
-                if (fullName === '') return;
-
+            // Check for "ТОВ" or "ФОП"
+            const isCompany = fullName.toLowerCase().includes('тов') || fullName.toLowerCase().includes('фоп');
+            
+            let login = '';
+            if (isCompany) {
+                // Transliterate the entire line without shortening
+                login = transliterate(fullName);
+            } else {
+                // Original logic for individuals
                 const parts = fullName.split(/\s+/);
                 
-                // Змінена логіка для обробки різних варіантів вводу
-                let login = '';
                 let transliteratedLastName = '';
                 let firstNameInitial = '';
                 let patronymicInitial = '';
@@ -210,33 +217,33 @@
                     patronymicInitial = transliterate(parts[2].charAt(0));
                     login += patronymicInitial;
                 }
+            }
 
-                if (login === '') {
-                    const errorElement = document.createElement('div');
-                    errorElement.className = 'result-item';
-                    errorElement.innerHTML = `<span class="original-name" style="color: #dc3545;">"${fullName}" - Некоректний формат</span>`;
-                    resultsContainer.appendChild(errorElement);
-                    return;
-                }
-                
-                const resultItem = document.createElement('div');
-                resultItem.className = 'result-item';
-                resultItem.innerHTML = `
-                    <div class="original-name" title="${fullName}">${fullName}</div>
-                    <span>${login}</span>
-                    <button onclick="copyLogin('${login}', this)">Копіювати</button>
-                `;
-                resultsContainer.appendChild(resultItem);
-            });
-        }
-        
-        // Add event listener to the textarea for automatic generation
-        document.addEventListener('DOMContentLoaded', () => {
-            const fullNameInput = document.getElementById('fullNameInput');
-            fullNameInput.addEventListener('input', generateLogins);
+            if (login === '') {
+                const errorElement = document.createElement('div');
+                errorElement.className = 'result-item';
+                errorElement.innerHTML = `<span class="original-name" style="color: #dc3545;">"${fullName}" - Некоректний формат</span>`;
+                resultsContainer.appendChild(errorElement);
+                return;
+            }
+            
+            const resultItem = document.createElement('div');
+            resultItem.className = 'result-item';
+            resultItem.innerHTML = `
+                <div class="original-name" title="${fullName}">${fullName}</div>
+                <span>${login}</span>
+                <button onclick="copyLogin('${login}', this)">Копіювати</button>
+            `;
+            resultsContainer.appendChild(resultItem);
         });
-    </script>
+    }
+    
+    // Add event listener to the textarea for automatic generation
+    document.addEventListener('DOMContentLoaded', () => {
+        const fullNameInput = document.getElementById('fullNameInput');
+        fullNameInput.addEventListener('input', generateLogins);
+    });
+</script>
     
 </body>
 </html>
-
