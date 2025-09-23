@@ -200,11 +200,14 @@
             
             let login = '';
 
-            // Check for "ТОВ", "ФОП", or "ПП" and more than 3 words
-            if ((lowerCaseLine.includes('тов') || lowerCaseLine.includes('фоп') || lowerCaseLine.includes('пп')) && parts.length > 3) {
+            // Check if the line contains "ТОВ", "ФОП", or "ПП" and has more than 3 words.
+            // Using a case-insensitive check for the keywords.
+            const isCompany = ['тов', 'фоп', 'пп'].some(keyword => lowerCaseLine.includes(keyword));
+            
+            if (isCompany && parts.length > 3) {
                 login = transliterate(fullName);
             } else {
-                // Original logic for individuals
+                // Default logic for P.I.B.
                 let transliteratedLastName = '';
                 let firstNameInitial = '';
                 let patronymicInitial = '';
