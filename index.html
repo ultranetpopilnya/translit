@@ -30,6 +30,12 @@
             width: 90%;
             max-width: 600px;
             margin-bottom: 2rem;
+            
+            /* Нові стилі для вирівнювання */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start; /* Вирівнює вміст до верху */
         }
         h1 {
             color: #444;
@@ -61,6 +67,7 @@
         #results-container {
             margin-top: 1.5rem;
             text-align: left;
+            width: 100%; /* Додано для коректного відображення */
         }
         .result-item {
             display: flex;
@@ -101,6 +108,7 @@
             font-size: 14px;
             color: #888;
             text-align: center;
+            width: 100%; /* Додано для коректного відображення */
         }
     </style>
 </head>
@@ -113,7 +121,7 @@
     <div id="results-container"></div>
     
     <div class="version-info">
-        <p>Версія 1.12</p>
+        <p>Версія 1.13</p>
     </div>
 </div>
 
@@ -254,5 +262,3 @@
     
 </body>
 </html>
-
-
